@@ -1,1 +1,1 @@
-# PCBS-final-project
+Programming an experiment on bin colour detection
