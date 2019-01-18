@@ -101,7 +101,7 @@ def answer_data():
     for filename in list_files:
         with open(path_data+filename, 'r', encoding='UTF-8') as data:
             for line in data:
-                Block_name, couleur, ID, Answer, RT = line.split(",")
+                Block_name, colour, ID, Answer, RT = line.split(",")
                 if Block_name != "Training Block":   #not analyzing the training block, by definition.
                     if colour == "R":
                         dic_data_R[ID] = dic_data_R.get(ID,"")+"1"+Answer+","  #creating a key 'ID' if not existing. 1 or 0 code for the presence or absence of a bin in the picture. The answer is Y or N depending on the subject's answer.
