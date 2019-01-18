@@ -14,7 +14,9 @@ The experiment consists in a succession of trials in which a picture containing 
     3.Preparing the experiment
     4.Data analysis: signal detection theory
     5.Program execution
-    6.Conclusion and further possible analyses
+    6.Further possible analysis
+    7. What I learnt from this project
+    
 
 ## Renaming the stimuli
 
@@ -23,7 +25,6 @@ To simplify further treatment and not to have complex names for pictures, I firs
 ## Loading and randomizing the stimuli
 
 I choose to preload pictures in order not to add delay in the experiment. I thus create a first function that returns 4 lists: one containing pictures for the training block, one with all pictures with red bins, one with all pictures with grey bins and one with pictures with no bins. Here it is:
-
 <pre><code>
 def loading_stim():
     """Preparation of 4 lists that will be used in the experiment: pictures with red bins, pictures with grey bins, pictures with no bins and a training list with all types of pictures for the training block."""
@@ -48,7 +49,6 @@ I then create a function that randomizes a list of stimuli, so that no influence
 ## Preparing the experiment
 
 I then use the Expyriment module to create an experiment with a training block and three identical treatment blocks, in which the trials are flashed pictures. The first function creates trials, the second treatment blocks, the third the training block and the last one creates the experiment:
-
 <pre><code>
 ## Preparing the experiment
 def setup_trial(filename):
@@ -93,7 +93,7 @@ There are three identical blocks to allow participants to take breaks. Thus, the
  
  ## Data analysis: signal detection theory
  
- Here are several functions useful for encoding the data and treating it. I want to encode participants' answers as a string with answers for each picture delimitated by commas. And answers per picture would write as two strings, one stating if a bin was present (red or grey) or not encoded as 1 or 0, and the other giving the participant's anwser (Y if he said he detected a bin, N otherwise). It will thus look as the folowing "1Y,0N,1N,1Y,0Y, ...":
+ Here are several functions useful for encoding the data and treating it. I want to encode participants' answers as a string with answers for each picture delimitated by commas. Answers per picture would write as two strings, one stating if a bin was present (red or grey) or not encoded as 1 or 0, and the other giving the participant's anwser (Y if he said he detected a bin, N otherwise). It will thus look as the folowing "1Y,0N,1N,1Y,0Y, ...". The answers are encoded separately depending on bin colour:
 <pre><code>       
 def answer_data():
     """Returns two dictionaries, one for red bin pictures one for grey bin ones, with both information on the presence or absence of a bin in the picture (1 or 0) and subjects' answers (Y or N) in the format '1Y,1N,0Y,0N'."""
@@ -199,7 +199,14 @@ if __name__ == "__main__":
     
   </code></pre>
   
-  ## Conclusion and further possible analyzes
+  ## Further possible analysis
+  With more time, it would have been interesting to do a second version of the data analysis using R for example, to easily run significance tests (for the difference of d' especially).
+  
+  Also, reaction times are measured but not analyzed here. It would be interesting to see if on average, participants respond faster for pictures with red bins than for pictures with grey bins, an information that would support our hypothesis that red bins are better detected.
+  
+  ## What I learnt from this project
+ In this project, I learnt to code more clearly, with identifiable steps just like in an essay: prepare the stimuli, prepare the trials, the blocks, the data analysis functions, etc and end with the execution. I feel more confident in coding psychological experiments, even though the one I wrote was quite basic but it allowed me to master better the Expyriment module that I didn't know at all before. It also allowed me master better dictionnaries (used to encode data here) and lists. I also learnt to work more rigorously with paths: in an experiment with different types of pictures, with data saving, etc. organization saves time and trouble!
+  
  
  
 
