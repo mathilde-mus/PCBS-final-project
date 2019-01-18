@@ -2,65 +2,27 @@
 
 ## Motivation for the project and general description of the task
 
-My goal is to show that subjects better detect red trash bags than grey ones in pictures taken in the streets of Paris, in order to change the mind of the Mairie de Paris regarding the colour choice of trash bags. I am doing an internship with a PhD student who works on this theme. However, she has programmed her experiment on Qualtrics to be exportable to UK participants. My goal is to program it using Python and especially the Expyriment module.
+My goal is to show that subjects are better at detecting red trash bags than grey ones in pictures taken in the streets of Paris, in order to change the mind of the Mairie de Paris regarding the colour choice of trash bags. I am doing an internship with a PhD student who works on this theme. However, she has programmed her experiment on Qualtrics to be exportable to UK participants. My goal is to program it using Python and especially the Expyriment module.
 
-The experiment consists in a succession of trials in which a picture with either a red bin, a grey bin or no bin is flashed (750ms) on the screen and the participant must indicate, by pressing one of two response buttons (A: absent, P: present), if a bin was present or not. The response time is recorded. There is a training block and then 3 identical blocks, to allow for participants to take pauses. Pictures are randomized so that there are pictures of the three types in each block. I am then comparing the hit rates and false alarm rates of pictures with red bins and of those with grey bins. I calculate a d' (see Signal Detection Theory) and I wish to obtain that d'(red) > d'(grey) thus proving that subjects more correctly detect red bins than grey bins.
+The experiment consists in a succession of trials in which a picture containing either a red bin, a grey bin or no bin is flashed (750ms) on the screen and the participant must indicate, by pressing one of two response buttons (A: absent, P: present), if a bin was present or not. The response time is recorded. There is a training block and then 3 identical blocks, to allow for breaks. Pictures are randomized so that there are pictures of the three types in each block. I am then comparing the hit rates and false alarm rates of pictures with red bins and of those with grey bins. I calculate a d' (see Signal Detection Theory) and I wish to obtain that d'(red) > d'(grey), thus proving that subjects more correctly detect red bins than grey bins on average.
 
 
 **Table of Contents**
 
-    1.Necessary imports and chosen path
-    2.Renaming the stimuli
-    3.Loading and randomizing the stimuli
-    4.Preparing the experiment
-    5.Data analysis: signal detection theory
-    6.Program execution
-    7.Conclusion and further possible analyses
-
-## Necessary imports and chosen path
-Here are the imports necessary to the running of the program. The only specific one is norm.ppf from the scipy module. It allows to calculate the d', a discriminability index from Signal Detection Theory estimating the strength of a signal, here that of red bins and grey bins. A big d' for red bin pictures means they are very well detected compared to pictures with no bins.
-
-<pre><code>
-import os
-import numpy as np
-import random
-from scipy.stats import norm
-import expyriment
-from  expyriment.stimuli import Picture, FixCross, BlankScreen
-z = norm.ppf  #z is the usual name used in the formula of the d'
-
-path = "C:/Python_travail/Final_project/"
-os.chdir(path)
-</code></pre>
+    1.Renaming the stimuli
+    2.Loading and randomizing the stimuli
+    3.Preparing the experiment
+    4.Data analysis: signal detection theory
+    5.Program execution
+    6.Conclusion and further possible analyses
 
 ## Renaming the stimuli
 
-To simplify further treatment and not to have complex names for pictures, I first rename my stimuli in a lexicographic order, starting with the initial of the colour of the bin (R for red, G for grey) and N for pictures with no bins using the following function:
-
-<pre><code>
-def rename():
-    """ Renames pictures in the form R_000, R_001, ... G_000, G_001, ... N_000,... to simplify further treatment """
-    path_stim = "Stimuli/"
-    for dossier in ["Red/","Grey/", "Null/"]:
-        prefix = dossier[0]+"_"   #gives R,G,N
-        count = 0
-        path_now = path_stim+dossier
-        for filename in os.listdir(path_now):
-            suffix = ""
-            if count < 10:
-                suffix += "0"
-            if count < 100:   #Around 150 pictures will be used.
-                suffix += "0"
-            suffix += str(count)
-            count+=1
-            os.rename(path_now+filename, path_now+prefix+suffix+".jpg")
-</code></pre>
+To simplify further treatment and not to have complex names for pictures, I first created a function that renames the stimuli in a lexicographic order, starting with the initial of the colour of the bin (R for red, G for grey) and N for pictures with no bins: R_000, R_001, ..., G_000, G_001, ..., N_000, N_001, etc. Around 150 pictures will be flashed (hence the double 0).
 
 ## Loading and randomizing the stimuli
 
-The following functions prepare the pictures that are going to be displayed to participants. 
-The first one returns 4 lists: one containing pictures for the training block, one with all pictures with red bins, one with all pictures with grey bins and one with pictures with no bins. 
-The second simply returns a randomized version of a list.
+I choose to preload pictures in order not to add delay in the experiment. I thus create a first function that returns 4 lists: one containing pictures for the training block, one with all pictures with red bins, one with all pictures with grey bins and one with pictures with no bins. Here it is:
 
 <pre><code>
 def loading_stim():
@@ -79,15 +41,13 @@ def loading_stim():
             else:
                 list_T.append(path_now+filename)
     return list_R,list_G,list_N, list_T
-    
-def randomize(list_stim):
-    """Randomizes the pictures in a given list"""
-    return list(np.random.permutation(list_stim))
 </code></pre>
+
+I then create a function that randomizes a list of stimuli, so that no influence of order appears in the results.
 
 ## Preparing the experiment
 
-Here I use the Expyriment module to create an experiment with a training block and three identical treatment blocks, in which the trials are flashed pictures:
+I then use the Expyriment module to create an experiment with a training block and three identical treatment blocks, in which the trials are flashed pictures. The first function creates trials, the second treatment blocks, the third the training block and the last one creates the experiment:
 
 <pre><code>
 ## Preparing the experiment
@@ -114,96 +74,52 @@ def setup_training(list_stim):
 
 
 def setup_experiment(list_stim_training,list_stim):
-    """Creates an experiment with a training block and then 3 blocks to allow for pauses."""
+    """Creates an experiment with a training block and then 3 identical blocks to allow for pauses."""
     exp = expyriment.design.Experiment(name="Bin Detection Experiment")
     expyriment.control.initialize(exp)
     exp.add_block(setup_training(list_stim_training))
-    NTRIALS = len(list_stim)//3    
+    NTRIALS = len(list_stim)//3
     list1 = list_stim[0:NTRIALS]
     list2 = list_stim[NTRIALS:2*NTRIALS]
     list3 = list_stim[2*NTRIALS:]
     list_tot = [list1, list2, list3]
-    
     for i in range(3):
         block = setup_block(list_tot[i], "Block "+str(i+1))  #creating Block 1, Block 2, Block 3
         exp.add_block(block)
     return exp
  </code></pre>
  
- There are three identical blocks to allow participants to take pauses. Thus, the blocks are of identical length and all contain red bin pictures, grey bin ones and no bin ones. I simply divided the set of trials by three.
+There are three identical blocks to allow participants to take breaks. Thus, the blocks are of identical length and all contain red bin pictures, grey bin ones and no bin ones. I simply divided the set of trials by three.
  
  ## Data analysis: signal detection theory
  
- Here are a set of functions allowing to analyze the data to finally arrive at the difference of dprime between red bin and grey bin pictures.
-<pre><code>
-## Data analysis
-def savetxt(filename,data,delimiter=","):
-    """Creates a writing file with string elements seperated by a delimiter."""
-    with open(filename,"w") as f:
-        for line in data:
-            max = len(line) - 1
-            count = 0
-            for element in line:
-                f.write(str(element))
-                if count != max: #For the last element, we don't add the delimiter.
-                    f.write(delimiter)
-                count+=1
-            f.write("\n")
-
-def get_ID(filename):
-    """Returns the name of a given picture file, thus excluding the extension. For example 'R_001'"""
-    return filename[-9:-4] 
-    
-def get_separate_ID(Picture_ID):
-    """Returns the first letter of the colour (R,G,N) of the picture and then the number name of the photo (0,1,2, ...)"""
-    return Picture_ID[0], str(int(Picture_ID[-3:]))
-        
+ Here are several functions useful for encoding the data and treating it. I want to encode participants' answers as a string with answers for each picture delimitated by commas. And answers per picture would write as two strings, one stating if a bin was present (red or grey) or not encoded as 1 or 0, and the other giving the participant's anwser (Y if he said he detected a bin, N otherwise). It will thus look as the folowing "1Y,0N,1N,1Y,0Y, ...":
+<pre><code>       
 def answer_data():
-    """Returns two dictionaries, one for red bins one for grey bins, with both information on the presence or absence of a bin in the picture and subjects' answers, in the format 1Y-1N-0Y-0N."""
+    """Returns two dictionaries, one for red bin pictures one for grey bin ones, with both information on the presence or absence of a bin in the picture (1 or 0) and subjects' answers (Y or N) in the format '1Y,1N,0Y,0N'."""
     path_data = "Data_before_treatment/"
     list_files = os.listdir(path_data)
-    dic_data_R = {}
-    dic_data_G = {}
-    
+    dic_data_R, dic_data_G = {}, {}
     for filename in list_files:
         with open(path_data+filename, 'r', encoding='UTF-8') as data:
             for line in data:
-                Block_name, Picture_ID, Answer, RT = line.split(",")
+                Block_name, colour, ID, Answer, RT = line.split(",")
                 if Block_name != "Training Block":   #not analyzing the training block, by definition.
-                    couleur, ID = get_separate_ID(Picture_ID)
-                    if couleur == "R":
+                    if colour == "R":
                         dic_data_R[ID] = dic_data_R.get(ID,"")+"1"+Answer+","  #creating a key 'ID' if not existing. 1 or 0 code for the presence or absence of a bin in the picture. The answer is Y or N depending on the subject's answer.
-                    elif couleur == "G":
+                    elif colour == "G":
                         dic_data_G[ID] = dic_data_G.get(ID,"")+"1"+Answer+","
                     else:
                         dic_data_R[ID] = dic_data_R.get(ID,"")+"0"+Answer+","
                         dic_data_G[ID] = dic_data_G.get(ID,"")+"0"+Answer+","
     return dic_data_R, dic_data_G
+  </code></pre>
             
-def hit_false_rate(data):
-    """ Returns hit and false alarm rates of a string of results for one picture."""
-    hit = 0
-    miss = 0
-    rej = 0
-    false = 0
-    for x in data.split(","):
-        if x == "1Y":
-            hit += 1
-        elif x == "1N" :
-            miss +=1
-        elif x == "0N":
-            rej += 1
-        elif x == "0Y":
-            false +=1
-    return([hit/(hit+miss), false/(false+rej)])
-
-  
+I then use the function that we already wrote in class to calculate hit and false alarm rates (hit_false_rate(data)) from a data string and an adapted version of the function calculating them on average for all subjects:
+<pre><code> 
 def hit_false_rate_multi_data():
     """Returns the mean hit and false alarm rates for red bin pictures and grey bin ones.""" 
-    list_hit_R = []
-    list_hit_G = []
-    list_false_R = []
-    list_false_G = []
+    list_hit_R, list_hit_G, list_false_R, list_false_G = [], [], [], []
     dic_data_R, dic_data_G = answer_data()  #creating anwswer dictionnaries.
     for i in range(len(dic_data_R)):  #dic_data_R and dic_data_G have the same length.
         hit_rate_R, false_rate_R = hit_false_rate(dic_data_R[str(i)][:-1]) #not to count the last comma in the data.
@@ -213,32 +129,28 @@ def hit_false_rate_multi_data():
         list_false_R.append(false_rate_R)
         list_false_G.append(false_rate_G)
     return np.mean(list_hit_R), np.mean(list_hit_G), np.mean(list_false_R), np.mean(list_false_G)
-
+  </code></pre>
+I finally compute the d' of pictures with red bins and substract from it that of pictures with grey bins, hoping to obtain a positive difference. I use the norm.ppf (called z here, as in the literature) function of the scipy module to do so:
+<pre><code> 
 def dprime():
     """Returning the difference between the d prime of red bin pictures and grey bin ones."""
     mean_hit_rate_R, mean_hit_rate_G, mean_false_rate_R, mean_false_rate_G = hit_false_rate_multi_data()
-    dprime_R = z(mean_hit_rate_R)-z(mean_false_rate_R)  #cf Signal Detection Theory: d' is a discriminability index estimating the strength of a signal, here of red bins.
-    dprime_G = z(mean_hit_rate_G)-z(mean_false_rate_G)  
+    dprime_R, dprime_G  = z(mean_hit_rate_R)-z(mean_false_rate_R), z(mean_hit_rate_G)-z(mean_false_rate_G) #cf Signal Detection Theory: d' is a discriminability index estimating the strength of a signal, here of red bins and grey ones respectively.
     return dprime_R - dprime_G 
   </code></pre>
   
   ## Program execution
-  Here I just run the experiment, that will call all the above created functions:
+  The last part is about running the experiment, that will call all the above created functions:
   <pre><code>
-  ## Program execution
 if __name__ == "__main__":
     rename()
     list_R, list_G, list_N, list_T = loading_stim()
-    list_stim_training = randomize(list_T)
-    list_stim = randomize(list_R+list_G+list_N) #randomization accross conditions
+    list_stim_training, list_stim = randomize(list_T), randomize(list_R+list_G+list_N) #randomization accross conditions
     exp = setup_experiment(list_stim_training, list_stim)
-    
     cross = FixCross(size=(25, 25), line_width=4)
     blankscreen = BlankScreen()
-    
     data = []
     expyriment.control.start(skip_ready_screen = True)
-    
     expyriment.stimuli.TextScreen("Welcome in this bin detection experiment.",
         "Your task is to answer P as quickly as possible if you see a bin,red or grey, in the flashed picture and A if you do not. There will be N trials. Press any key to continue.").present()
     exp.keyboard.wait()
@@ -251,7 +163,7 @@ if __name__ == "__main__":
             exp.keyboard.wait()
             blankscreen.present()
         if block.name == 'Block 1':
-            count = 0  #for knowing which picture is displayed, and not counting those in the training block.
+            count = 0  #to know which picture is displayed, and not counting those in the training block.
         for trial in block.trials:
             cross.present()
             waitingtime = 1000
@@ -264,31 +176,27 @@ if __name__ == "__main__":
                 key, rt = exp.keyboard.wait([expyriment.misc.constants.K_q,
                                             expyriment.misc.constants.K_p])
                 rt+=750  #the picture is displayed for 750ms so it needs to be added to the reaction time
-                
             if key == expyriment.misc.constants.K_q:
                 Answer = 'N'  #the subject didn't see a bin
             else:
                 Answer = 'Y'
-            
-            Picture_ID = get_ID(list_stim[count])   #eg R_001.jpg -> R_001
-            data.append([block.name, Picture_ID, Answer, rt])
+            colour, ID = get_colour_ID(list_stim[count])   #eg R_001.jpg -> R,1
+            data.append([block.name, colour, ID, Answer, rt])
             count +=1
-        
         if block.name == 'Training Block':
             expyriment.stimuli.TextScreen("You have completed the training block!"," Press any key to start the experiment.").present()
             exp.keyboard.wait()
             blankscreen.present()
-       
         if block.name == 'Block 1' or block.name == 'Block 2':
             expyriment.stimuli.TextScreen(
                 "You have completed %s !" %block.name,"You may take a break and press any key to continue").present()
             exp.keyboard.wait()
             blankscreen.present()
-    
     expyriment.control.end()
     
-    savetxt("Data_before_treatment/" + str(exp.subject)+".csv", data, delimiter = ",")  #creating a CSV file for each subject with the 4 measured variables.
-    dprime()
+    np.savetxt("Data_before_treatment/" + str(exp.subject)+".csv",data,delimiter = ",",fmt="%s") #creates a CSV file for each subject with the measured variables in a string format.
+    print("\nd'(red bins) - d'(grey bins) = ", dprime()) #if positive, our research hypothesis is right
+    
   </code></pre>
   
   ## Conclusion and further possible analyzes
