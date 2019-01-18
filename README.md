@@ -50,7 +50,6 @@ I then create a function that randomizes a list of stimuli, so that no influence
 
 I then use the Expyriment module to create an experiment with a training block and three identical treatment blocks, in which the trials are flashed pictures. The first function creates trials, the second treatment blocks, the third the training block and the last one creates the experiment:
 <pre><code>
-## Preparing the experiment
 def setup_trial(filename):
     """Creates a trial that displays a given picture on the screen."""
     trial = expyriment.design.Trial()
@@ -139,7 +138,7 @@ def dprime():
     return dprime_R - dprime_G 
   </code></pre>
   
-  ## Program execution
+## Program execution
   The last part is about running the experiment, that will call all the above created functions:
   <pre><code>
 if __name__ == "__main__":
@@ -195,16 +194,15 @@ if __name__ == "__main__":
     expyriment.control.end()
     
     np.savetxt("Data_before_treatment/" + str(exp.subject)+".csv",data,delimiter = ",",fmt="%s") #creates a CSV file for each subject with the measured variables in a string format.
-    print("\nd'(red bins) - d'(grey bins) = ", dprime()) #if positive, our research hypothesis is right
-    
+    print("\nd'(red bins) - d'(grey bins) = ", dprime()) #if positive, our research hypothesis is right   
   </code></pre>
   
-  ## Further possible analysis
+## Further possible analysis
   With more time, it would have been interesting to do a second version of the data analysis using R for example, to easily run significance tests (for the difference of d' especially).
   
   Also, reaction times are measured but not analyzed here. It would be interesting to see if on average, participants respond faster for pictures with red bins than for pictures with grey bins, an information that would support our hypothesis that red bins are better detected.
   
-  ## What I learnt from this project
+## What I learnt from this project
  In this project, I learnt to code more clearly, with identifiable steps just like in an essay: prepare the stimuli, prepare the trials, the blocks, the data analysis functions, etc and end with the execution. I feel more confident in coding psychological experiments, even though the one I wrote was quite basic but it allowed me to master better the Expyriment module that I didn't know at all before. It also allowed me master better dictionnaries (used to encode data here) and lists. I also learnt to work more rigorously with paths: in an experiment with different types of pictures, with data saving, etc. organization saves time and trouble!
   
  
