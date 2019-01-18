@@ -15,7 +15,7 @@ The experiment consists in a succession of trials in which a picture containing 
     4.Data analysis: signal detection theory
     5.Program execution
     6.Further possible analysis
-    7. What I learnt from this project
+    7.What I learnt from this project
     
 
 ## Renaming the stimuli
