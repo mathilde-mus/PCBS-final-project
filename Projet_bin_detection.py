@@ -91,7 +91,7 @@ def setup_experiment(list_stim_training,list_stim):
 ## Data analysis
 def get_colour_ID(Picture_ID):
     """Returns the first letter of the colour (R,G,N) of the picture and then the number name of the photo (0,1,2, ...)"""
-    return Picture_ID[-9], str(int(Picture_ID[-7:-4]))
+    return Picture_ID[-9], str(int(Picture_ID[-7:-4])) #eg R_001.jpg -> R,1
         
 def answer_data():
     """Returns two dictionaries, one for red bins one for grey bins, with both information on the presence or absence of a bin in the picture and subjects' answers, in the format 1Y-1N-0Y-0N."""
@@ -185,7 +185,7 @@ if __name__ == "__main__":
                 Answer = 'N'  #the subject didn't see a bin
             else:
                 Answer = 'Y'
-            colour, ID = get_colour_ID(list_stim[count])   #eg R_001.jpg -> R,1
+            colour, ID = get_colour_ID(list_stim[count])   
             data.append([block.name, colour, ID, Answer, rt])
             count +=1
         if block.name == 'Training Block':
