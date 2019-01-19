@@ -90,7 +90,7 @@ def setup_experiment(list_stim_training,list_stim):
  
 There are three identical blocks to allow participants to take breaks. Thus, the blocks are of identical length and all contain red bin pictures, grey bin ones and no bin ones. I simply divided the set of trials by three.
  
- ## Data analysis: signal detection theory
+## Data analysis: signal detection theory
  
  Here are several functions useful for encoding the data and treating it. I want to encode participants' answers as a string with answers for each picture delimitated by commas. Answers per picture would write as two strings, one stating if a bin was present (red or grey) or not encoded as 1 or 0, and the other giving the participant's anwser (Y if he said he detected a bin, N otherwise). It will thus look as the folowing "1Y,0N,1N,1Y,0Y, ...". The answers are encoded separately depending on bin colour:
 <pre><code>       
