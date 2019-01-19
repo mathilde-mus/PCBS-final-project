@@ -139,7 +139,7 @@ def dprime():
   </code></pre>
   
 ## Program execution
-  The last part is about running the experiment, that will call all the above created functions:
+  The last part is about creating objects for the experiment (trials, blocks, fixation cross, anwswer buttons, display time, text messages), running it and saving data in a CSV file, all that calling the above created functions:
   <pre><code>
 if __name__ == "__main__":
     rename()
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     data = []
     expyriment.control.start(skip_ready_screen = True)
     expyriment.stimuli.TextScreen("Welcome in this bin detection experiment.",
-        "Your task is to answer P as quickly as possible if you see a bin,red or grey, in the flashed picture and A if you do not. There will be N trials. Press any key to continue.").present()
+        "Your task is to answer P as quickly as possible if you see a bin,red or grey, in the flashed picture and A if you do not. There will be 150 trials. Press any key to continue.").present()
     exp.keyboard.wait()
     blankscreen.present()
     
@@ -196,6 +196,7 @@ if __name__ == "__main__":
     np.savetxt("Data_before_treatment/" + str(exp.subject)+".csv",data,delimiter = ",",fmt="%s") #creates a CSV file for each subject with the measured variables in a string format.
     print("\nd'(red bins) - d'(grey bins) = ", dprime()) #if positive, our research hypothesis is right   
   </code></pre>
+The function *savetxt* from the numpy module is used to create a CSV file containing variables of interest, that will be then analyzed using the fuctions created in the *Data analysis* part.
   
 ## Further possible analysis
   With more time, it would have been interesting to do a second version of the data analysis using R for example, to easily run significance tests (for the difference of d' especially).
