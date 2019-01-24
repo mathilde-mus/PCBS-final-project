@@ -20,7 +20,7 @@ The experiment consists in a succession of trials in which a picture containing 
 
 ## Renaming the stimuli
 
-To simplify further treatment and not to have complex names for pictures, I first created a function that renames the stimuli in a lexicographic order, starting with the initial of the colour of the bin (R for red, G for grey) and N for pictures with no bins: R_000, R_001, ..., G_000, G_001, ..., N_000, N_001, etc. Around 150 pictures will be flashed (hence the double 0). This step will only be done once, not for every participant as the pictures won't change.
+To simplify further treatment and not to have complex names for pictures, I first created a function that renames the stimuli in a lexicographic order, starting with the initial of the colour of the bin (R for red, G for grey) and N for pictures with no bins: R_000, R_001, ..., G_000, G_001, ..., N_000, N_001, etc. Around 150 pictures will be flashed (hence the double 0). This step will only be done once, as the pictures will be the same for each participant. Here my pictures come from a same camera and thus have the same size but otherwise I would also put in this part a function that resizes the pictures so that they all have the same size on the display screen.
 
 ## Loading and randomizing the stimuli
 
@@ -208,7 +208,7 @@ The function *savetxt* from the numpy module is used to create a CSV file contai
 I started coding in *classe préparatoire*, on Python. I learnt how to write functions, loops, how to manipulate lists, use imported modules, and debug easy bugs. So I had simply the basics before this class. I had no notion of prompts nor text editors such as Markdown for instance.
 
 ### What I learnt from this class/project
- During classes, I learnt to write an organized code (for example, use the "if name == main" and run the execution afterwards), to use paths, to open and write files, etc. I discovered useful modules for coding in cognitive science such as Expyriment and Pygame.
+ During classes, I learnt to write an organized code (for example, put a description for every function, use the "if name == main" and run the execution afterwards), to use paths, to open and write files, etc. I discovered useful modules for coding in cognitive science such as Expyriment and Pygame.
   In this project particularly, I learnt to code more clearly, with identifiable steps just like in an essay: prepare the stimuli, prepare the trials, the blocks, the data analysis functions, etc and end with the execution. I feel more confident in coding psychological experiments, even though the one I wrote was quite basic but it allowed me to master better the Expyriment module that I didn't know at all before. It also allowed me master better dictionnaries (used to encode data here) and lists. I also learnt to work more rigorously with paths: in an experiment with different types of pictures, with data saving, etc. organization saves time and trouble! I finally learnt to use Markdown and its basic commands, and to create an html page.
   
 ### Suggested improvements
