@@ -20,7 +20,7 @@ The experiment consists in a succession of trials in which a picture containing 
 
 ## Renaming the stimuli
 
-To simplify further treatment and not to have complex names for pictures, I first created a function that renames the stimuli in a lexicographic order, starting with the initial of the colour of the bin (R for red, G for grey) and N for pictures with no bins: R_000, R_001, ..., G_000, G_001, ..., N_000, N_001, etc. Around 150 pictures will be flashed (hence the double 0).
+To simplify further treatment and not to have complex names for pictures, I first created a function that renames the stimuli in a lexicographic order, starting with the initial of the colour of the bin (R for red, G for grey) and N for pictures with no bins: R_000, R_001, ..., G_000, G_001, ..., N_000, N_001, etc. Around 150 pictures will be flashed (hence the double 0). This step will only be done once, not for every participant as the pictures won't change.
 
 ## Loading and randomizing the stimuli
 
