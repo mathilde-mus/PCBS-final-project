@@ -14,7 +14,7 @@ os.chdir(path)
 
 ## Rename stimuli (photos)
 def rename():
-    """ Renames pictures in the form R_000, R_001, ... G_000, G_001, ... N_000,... to simplify further treatment """
+    """ Renames pictures in the form R_000, R_001, ... G_000, G_001, ... N_000,... to simplify further treatment. Only to be done once. """
     path_stim = "Stimuli/"
     for dossier in ["Red/","Grey/", "Null/"]:
         prefix = dossier[0]+"_"   #gives R,G,N
